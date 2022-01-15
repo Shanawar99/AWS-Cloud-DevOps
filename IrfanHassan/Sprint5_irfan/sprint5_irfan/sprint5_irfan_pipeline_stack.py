@@ -32,8 +32,8 @@ class Sprint5IrfanPipelineStack(core.Stack):
     
         
 #######  Addign Prodcution stage with mannaul approval in Pipeline  #######################################3
-        #prodstage=  Sprint5IrfanStage(self, "ProdStage", env={'account':'315997497220','region': 'us-east-2'} )
-        #pipeline.add_stage(prodstage, pre=[  pipelines.ManualApprovalStep("PromoteToProd") ])
+        prodstage=  Sprint5IrfanStage(self, "ProdStage", env={'account':'315997497220','region': 'us-east-2'} )
+        pipeline.add_stage(prodstage, pre=[  pipelines.ManualApprovalStep("PromoteToProd") ])
         
       
         
