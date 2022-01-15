@@ -1,4 +1,5 @@
 import boto3,os
+import json
 import db_ReadWrite_handler as dynamo_RW
 
 client = boto3.client('dynamodb')
@@ -15,7 +16,7 @@ def lambda_handler(events, context):
     
     if events['httpMethod'] == 'GET':
         data = dynamo_RW.ReadFromTable(os.getenv(key = 'table_name'))
-        response_msg = f"data from table is = {data} "
+        response_msg = data
         
         
     ############################## Put event ###############################
@@ -57,6 +58,11 @@ def lambda_handler(events, context):
     return {
         
         'statusCode' : 200,
-        'body'  :  response_msg
+        'headers':{
+            'Access-Control-Allow-Methods': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body'  :  json.dumps(response_msg)
         
     }
