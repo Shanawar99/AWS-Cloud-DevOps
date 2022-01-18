@@ -17,7 +17,8 @@ from aws_cdk import (
     aws_codebuild as codebuild_,
     aws_s3_assets as s3_assets,
     aws_ecs as ecs,
-    aws_ecr as ecr
+    aws_ecr as ecr,
+    aws_ec2 as ec2
 )
 from resources import constants as constant_
 from resources.s3bucket_read import s3bucket_read as bucket_ 
@@ -90,7 +91,27 @@ class Sprint5IrfanStack(cdk.Stack):
         repo = ecr.Repository.from_repository_name(self, "IrfanRepo", "hello-world")
         image=ecs.EcrImage(repo, "latest")
         
-       # ecr_img = ecr.EcrImage().from_ecr_repository('hello-world',tag='latest') 
+        # Create an ECS cluster
+        vpc = ec2.Vpc(self, "VPC")
+        cluster = ecs.Cluster(self, "IrfanCluster",vpc=vpc)
+        
+        # Add capacity to it
+        cluster.add_capacity("DefaultAutoScalingGroupCapacity",
+            instance_type=ec2.InstanceType("t2.xlarge"))
+        
+        task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
+        
+        task_definition.add_container("DefaultContainer",
+            image=image
+        )
+        
+        # Instantiate an Amazon ECS Service
+        ecs_service = ecs.Ec2Service(self, "Service",
+            cluster=cluster,
+            task_definition=task_definition
+        )
+                
+       
 ##############  reading URL from URL DynamoDB table  ##############################################        
         #
         list_url=bucket_(constant_.bucket,constant_.file_name).bucket_as_list();
