@@ -107,10 +107,10 @@ class Sprint5IrfanStack(cdk.Stack):
         )
         
         # Instantiate an Amazon ECS Service
-        #ecs_service = ecs.Ec2Service(self, "Service",
-        #    cluster=cluster,
-        #    task_definition=task_definition
-        #)
+        ecs_service = ecs.Ec2Service(self, "Service",
+            cluster=cluster,
+            task_definition=task_definition
+        )
                 
        
 ##############  reading URL from URL DynamoDB table  ##############################################        
