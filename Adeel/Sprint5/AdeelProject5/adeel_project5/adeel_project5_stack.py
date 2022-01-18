@@ -93,7 +93,7 @@ class AdeelProject5Stack(cdk.Stack):
         
         
         
-        
+        ''''
         repo = ecr.Repository.from_repository_name(self, "adeelecr", "pyrestful")
         image=ecs.EcrImage(repo, "latest")
         
@@ -114,7 +114,7 @@ class AdeelProject5Stack(cdk.Stack):
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
             task_definition=task_definition  )
-        
+        '''
         
         ############################## Creating Dynamo table and giving it Premission ###############################
          
