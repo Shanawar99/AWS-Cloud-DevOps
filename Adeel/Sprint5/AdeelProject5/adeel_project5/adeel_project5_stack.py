@@ -95,7 +95,7 @@ class AdeelProject5Stack(cdk.Stack):
         
         repo = ecr.Repository.from_repository_name(self, "adeelecr", "pyrestful")
         image=ecs.EcrImage(repo, "latest")
-        
+        ''''
         # Create an ECS cluster
         vpc = ec2.Vpc(self, "adeelVip")
         cluster = ecs.Cluster(self, "adeelC",vpc=vpc)
@@ -108,7 +108,7 @@ class AdeelProject5Stack(cdk.Stack):
         task_definition.add_container("DefaultContainer",
             image=image,
             memory_limit_mib=512)
-        ''''
+        
         # Instantiate an Amazon ECS Service
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
