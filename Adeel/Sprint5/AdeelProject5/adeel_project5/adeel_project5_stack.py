@@ -13,7 +13,10 @@ from aws_cdk import (
     aws_cloudwatch_actions as actions_,
     aws_dynamodb as db,
     aws_codedeploy as codedeploy,
-    aws_apigateway as apigateway
+    aws_apigateway as apigateway,
+    aws_ec2 as ec2,
+    aws_ecr as ecr,
+    aws_ecs as ecs
 )
 from constructs import Construct
 from resources1 import constants1 as constants
@@ -86,6 +89,31 @@ class AdeelProject5Stack(cdk.Stack):
         items.add_method("GET") # GET /items
         items.add_method("PUT") #  Allowed methods: ANY,OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD POST /items
         items.add_method("DELETE")
+        
+        
+        
+        
+        
+        repo = ecr.Repository.from_repository_name(self, "adeelecr", "pyrestful")
+        image=ecs.EcrImage(repo, "latest")
+        
+        # Create an ECS cluster
+        vpc = ec2.Vpc(self, "adeelVip")
+        cluster = ecs.Cluster(self, "adeelC",vpc=vpc)
+        
+        # Add capacity to it
+        cluster.add_capacity("adeelEC2capacity",
+            instance_type=ec2.InstanceType("t2.xlarge"))
+        
+        task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
+        task_definition.add_container("DefaultContainer",
+            image=image,
+            memory_limit_mib=512)
+        
+        # Instantiate an Amazon ECS Service
+        ecs_service = ecs.Ec2Service(self, "AdService",
+            cluster=cluster,
+            task_definition=task_definition  )
         
         
         ############################## Creating Dynamo table and giving it Premission ###############################
