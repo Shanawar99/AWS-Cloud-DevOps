@@ -108,12 +108,12 @@ class AdeelProject5Stack(cdk.Stack):
         task_definition.add_container("DefaultContainer",
             image=image,
             memory_limit_mib=512)
-        
+        ''''
         # Instantiate an Amazon ECS Service
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
             task_definition=task_definition)
-        
+        '''
         ############################## Creating Dynamo table and giving it Premission ###############################
          
          
