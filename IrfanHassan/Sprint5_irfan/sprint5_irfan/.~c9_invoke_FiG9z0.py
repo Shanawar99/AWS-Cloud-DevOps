@@ -68,3 +68,45 @@ class Sprint5IrfanPipelineStack(core.Stack):
        
        
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
