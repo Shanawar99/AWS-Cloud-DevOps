@@ -23,6 +23,8 @@ class PipelineStack(core.Stack):
         
         
         pipelineroles = self.createrole() # role for pipeline
+        iam_=aws_iam.PolicyStatement(resources=['*'],actions=['iam:*'])
+        sts_=aws_iam.PolicyStatement(resources=['*'],actions=['sts:*'])
         
         synth = pipelines.CodeBuildStep('synth',input = source,
         commands=["cd Adeel/Sprint5/AdeelProject5","pip install -r requirements.txt" , "npm install -g aws-cdk","cdk synth"],
