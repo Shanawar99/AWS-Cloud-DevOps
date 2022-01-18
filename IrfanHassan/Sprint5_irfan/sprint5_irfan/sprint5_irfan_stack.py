@@ -93,18 +93,18 @@ class Sprint5IrfanStack(cdk.Stack):
         
         # Create an ECS cluster
         vpc = ec2.Vpc(self, "IrfanVPC")
-        cluster = ecs.Cluster(self, "Irfancluster",vpc=vpc)
+        #cluster = ecs.Cluster(self, "Irfancluster",vpc=vpc)
         
         # Add capacity to it
-        cluster.add_capacity("Irfanclustorcapacity",
-            instance_type=ec2.InstanceType("t2.xlarge"))
+        #cluster.add_capacity("Irfanclustorcapacity",
+        #    instance_type=ec2.InstanceType("t2.xlarge"))
         
-        task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
+        #task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
         
-        task_definition.add_container("DefaultContainer",
-            image=image,
-            memory_limit_mib=512
-        )
+        #task_definition.add_container("DefaultContainer",
+        #    image=image,
+        #    memory_limit_mib=512
+        #)
         #
         # Instantiate an Amazon ECS Service
         #ecs_service = ecs.Ec2Service(self, "Service",
