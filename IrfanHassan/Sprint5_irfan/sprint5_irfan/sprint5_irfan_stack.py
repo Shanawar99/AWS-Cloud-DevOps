@@ -15,7 +15,9 @@ from aws_cdk import (
     aws_apigateway as apigateway_,
     aws_amplify as amplify_,
     aws_codebuild as codebuild_,
-    aws_s3_assets as s3_assets
+    aws_s3_assets as s3_assets,
+    aws_ecs as ecs,
+    aws_ecr as ecr
 )
 from resources import constants as constant_
 from resources.s3bucket_read import s3bucket_read as bucket_ 
@@ -83,7 +85,12 @@ class Sprint5IrfanStack(cdk.Stack):
         items.add_method("DELETE") # PUT items
         items.add_method("POST")  #update items
     
+###############    pulling image from ECR repo ###################################################
         
+        repo = ecr.Repository.from_repository_name(self, "IrfanRepo", "hello-world")
+        image=ecs.EcrImage(repo, "latest")
+        
+       # ecr_img = ecr.EcrImage().from_ecr_repository('hello-world',tag='latest') 
 ##############  reading URL from URL DynamoDB table  ##############################################        
         #
         list_url=bucket_(constant_.bucket,constant_.file_name).bucket_as_list();
