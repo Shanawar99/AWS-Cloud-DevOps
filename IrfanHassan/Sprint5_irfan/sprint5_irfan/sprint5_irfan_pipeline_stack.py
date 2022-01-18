@@ -32,11 +32,11 @@ class Sprint5IrfanPipelineStack(core.Stack):
         
 ########   Adding Beta Stage with Unit Test and Initgration Test ###########################################
         betaStage =  Sprint5IrfanStage(self, "BetaStag", env = { 'account': '315997497220', 'region': 'us-east-2'})
-        test = pipelines.CodeBuildStep('unit_and_Integration_test_',commands=["cd IrfanHassan/Sprint5_irfan", "pip install -r requirements.txt",
-        "pip install pytest","pip install requests","pytest unittest"],
-            role=pipeline_role,
-            role_policy_statements=[iam_,sts_])#,"pytest Intigration"])
-        pipeline.add_stage(betaStage, pre = [test])
+#        test = pipelines.CodeBuildStep('unit_and_Integration_test_',commands=["cd IrfanHassan/Sprint5_irfan", "pip install -r requirements.txt",
+#        "pip install pytest","pip install requests","pytest unittest"],
+#            role=pipeline_role,
+#            role_policy_statements=[iam_,sts_])#,"pytest Intigration"])
+        pipeline.add_stage(betaStage)#, pre = [test])
     
         
 #######  Addign Prodcution stage with mannaul approval in Pipeline  #######################################3
