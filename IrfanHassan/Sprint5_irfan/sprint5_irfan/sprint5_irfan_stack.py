@@ -106,7 +106,7 @@ class Sprint5IrfanStack(cdk.Stack):
             image=image,
             memory_limit_mib=512
         )
-        
+        #
         # Instantiate an Amazon ECS Service
         ecs_service = ecs.Ec2Service(self, "Service",
             cluster=cluster,
