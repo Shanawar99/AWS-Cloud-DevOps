@@ -65,11 +65,11 @@ class Sprint5IrfanStack(cdk.Stack):
         url_table=self.create_table(id='irfanurltable', key=db.Attribute(name="URL", type=db.AttributeType.STRING))
         url_table.grant_full_access(url_lambda)
         url_lambda.add_environment('table_name', url_table.table_name)
-        #table_name=url_table['"TableDescription']['TableName']
+        table_name=url_table['"TableDescription']['TableName']
 ####    adding s3bucket event to trigger url_labda       ##########################################################################
-        bucket = s3.Bucket(self, "urls3bucket")
-        url_lambda.add_event_source(sources.S3EventSource(bucket,
-                          events=[s3.EventType.OBJECT_CREATED],filters=[s3.NotificationKeyFilter(suffix=".json")]))
+     #   bucket = s3.Bucket(self, "urls3bucket")
+    #    url_lambda.add_event_source(sources.S3EventSource(bucket,
+     #                     events=[s3.EventType.OBJECT_CREATED],filters=[s3.NotificationKeyFilter(suffix=".json")]))
 
 ####### Adding API GateWay ##########################################################################################################
         apigateway_lambda=self.create_lambda('ApiGateWayLambda', './resources','apigateway_lambda.lambda_handler' ,db_lambda_role)
@@ -92,25 +92,25 @@ class Sprint5IrfanStack(cdk.Stack):
         image=ecs.EcrImage(repo, "latest")
         
         # Create an ECS cluster
-        #vpc = ec2.Vpc(self, "IrfanVPC")
-        #cluster = ecs.Cluster(self, "Irfancluster",vpc=vpc)
+        vpc = ec2.Vpc(self, "IrfanVPC")
+        cluster = ecs.Cluster(self, "Irfancluster",vpc=vpc)
         
         # Add capacity to it
-        #cluster.add_capacity("Irfanclustorcapacity",
-        #    instance_type=ec2.InstanceType("t2.xlarge"))
+        cluster.add_capacity("Irfanclustorcapacity",
+            instance_type=ec2.InstanceType("t2.xlarge"))
         
-        #task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
+        task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
         
-        #task_definition.add_container("DefaultContainer",
-        #    image=image,
-        #    memory_limit_mib=512
-        #)
+        task_definition.add_container("DefaultContainer",
+            image=image,
+            memory_limit_mib=512
+        )
         #
         # Instantiate an Amazon ECS Service
-        #ecs_service = ecs.Ec2Service(self, "Service",
-        #    cluster=cluster,
-        #    task_definition=task_definition
-        #)
+        ecs_service = ecs.Ec2Service(self, "Service",
+            cluster=cluster,
+            task_definition=task_definition
+        )
                 
        
 ##############  reading URL from URL DynamoDB table  ##############################################        
