@@ -104,7 +104,7 @@ class Sprint5IrfanStack(cdk.Stack):
         
         task_definition.add_container("DefaultContainer",
             image=image,
-            memory_limit_mi_b=512
+            memory_limit_mib=512
         )
         
         # Instantiate an Amazon ECS Service
