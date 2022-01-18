@@ -96,7 +96,7 @@ class Sprint5IrfanStack(cdk.Stack):
         cluster = ecs.Cluster(self, "IrfanCluster",vpc=vpc)
         
         # Add capacity to it
-        cluster.add_capacity("DefaultAutoScalingGroupCapacity",
+        cluster.add_capacity("IrfanClustorcapacity",
             instance_type=ec2.InstanceType("t2.xlarge"))
         
         task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
@@ -107,10 +107,10 @@ class Sprint5IrfanStack(cdk.Stack):
         )
         
         # Instantiate an Amazon ECS Service
-        ecs_service = ecs.Ec2Service(self, "Service",
-            cluster=cluster,
-            task_definition=task_definition
-        )
+        #ecs_service = ecs.Ec2Service(self, "Service",
+        #    cluster=cluster,
+        #    task_definition=task_definition
+        #)
                 
        
 ##############  reading URL from URL DynamoDB table  ##############################################        
