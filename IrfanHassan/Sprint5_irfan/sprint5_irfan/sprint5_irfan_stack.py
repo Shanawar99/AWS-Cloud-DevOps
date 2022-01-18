@@ -97,8 +97,7 @@ class Sprint5IrfanStack(cdk.Stack):
         
         # Add capacity to it
         cluster.add_capacity("DefaultAutoScalingGroupCapacity",
-            instance_type=ec2.InstanceType("t2.xlarge"),
-            desired_capacity=3)
+            instance_type=ec2.InstanceType("t2.xlarge"))
         
         task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
         
@@ -106,7 +105,7 @@ class Sprint5IrfanStack(cdk.Stack):
             image=image,
             memory_limit_mib=512
         )
-        #
+        
         # Instantiate an Amazon ECS Service
         ecs_service = ecs.Ec2Service(self, "Service",
             cluster=cluster,
