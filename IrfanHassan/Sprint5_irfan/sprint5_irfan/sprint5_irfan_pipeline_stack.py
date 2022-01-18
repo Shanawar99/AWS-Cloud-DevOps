@@ -26,7 +26,6 @@ class Sprint5IrfanPipelineStack(core.Stack):
                             "pip install -r requirements.txt ","npm install -g aws-cdk","cdk synth" ],
                             primary_output_directory = "IrfanHassan/Sprint5_irfan/cdk.out",
                             role=pipeline_role,
-                            role_policy_statements=[iam_,sts_]role=pipeline_role,
                             role_policy_statements=[iam_,sts_]
                             )
         pipeline = pipelines.CodePipeline(self,'pipeline',synth=synth)
@@ -36,7 +35,6 @@ class Sprint5IrfanPipelineStack(core.Stack):
         test = pipelines.CodeBuildStep('unit_and_Integration_test_',commands=["cd IrfanHassan/Sprint5_irfan", "pip install -r requirements.txt",
         "pip install pytest","pip install requests","pytest unittest"],
             role=pipeline_role,
-            role_policy_statements=[iam_,sts_]role=pipeline_role,
             role_policy_statements=[iam_,sts_])#,"pytest Intigration"])
         pipeline.add_stage(betaStage, pre = [test])
     

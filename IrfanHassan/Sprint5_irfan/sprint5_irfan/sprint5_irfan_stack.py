@@ -101,16 +101,16 @@ class Sprint5IrfanStack(cdk.Stack):
         
         task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
         
-        #task_definition.add_container("DefaultContainer",
-        #    image=image,
-        #    memory_limit_mib=512
-        #)
+        task_definition.add_container("DefaultContainer",
+            image=image,
+            memory_limit_mib=512
+        )
         
         # Instantiate an Amazon ECS Service
-        #ecs_service = ecs.Ec2Service(self, "Service",
-        #    cluster=cluster,
-        #    task_definition=task_definition
-        #)
+        ecs_service = ecs.Ec2Service(self, "Service",
+            cluster=cluster,
+            task_definition=task_definition
+        )
                 
        
 ##############  reading URL from URL DynamoDB table  ##############################################        
