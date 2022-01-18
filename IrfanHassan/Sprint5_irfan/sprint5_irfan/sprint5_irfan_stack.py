@@ -92,7 +92,7 @@ class Sprint5IrfanStack(cdk.Stack):
         image=ecs.EcrImage(repo, "latest")
         
         # Create an ECS cluster
-        vpc = ec2.Vpc(self, "IrfanVPC")
+        #vpc = ec2.Vpc(self, "IrfanVPC")
         #cluster = ecs.Cluster(self, "Irfancluster",vpc=vpc)
         
         # Add capacity to it

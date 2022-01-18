@@ -21,7 +21,7 @@ class Sprint5IrfanPipelineStack(core.Stack):
                            
 
 ##########  Installing the requirement and Build the Source ##############################################
-        synth = pipelines.ShellStep('synth', input= source,
+        synth = pipelines.CodeBuildStep('synth', input= source,
                 commands = ["cd IrfanHassan/Sprint5_irfan","pip install aws-cdk.aws_cloudwatch_actions==1.135.0", 
                             "pip install -r requirements.txt ","npm install -g aws-cdk","cdk synth" ],
                             primary_output_directory = "IrfanHassan/Sprint5_irfan/cdk.out",
@@ -32,16 +32,16 @@ class Sprint5IrfanPipelineStack(core.Stack):
         
 ########   Adding Beta Stage with Unit Test and Initgration Test ###########################################
         betaStage =  Sprint5IrfanStage(self, "BetaStag", env = { 'account': '315997497220', 'region': 'us-east-2'})
-#        test = pipelines.CodeBuildStep('unit_and_Integration_test_',commands=["cd IrfanHassan/Sprint5_irfan", "pip install -r requirements.txt",
-#        "pip install pytest","pip install requests","pytest unittest"],
-#            role=pipeline_role,
-#            role_policy_statements=[iam_,sts_])#,"pytest Intigration"])
+        test = pipelines.CodeBuildStep('unit_and_Integration_test_',commands=["cd IrfanHassan/Sprint5_irfan", "pip install -r requirements.txt",
+        "pip install pytest","pip install requests","pytest unittest"],
+            role=pipeline_role,
+            role_policy_statements=[iam_,sts_])#,"pytest Intigration"])
         pipeline.add_stage(betaStage)#, pre = [test])
     
         
 #######  Addign Prodcution stage with mannaul approval in Pipeline  #######################################3
-        prodstage=  Sprint5IrfanStage(self, "ProdStage", env={'account':'315997497220','region': 'us-east-2'} )
-        pipeline.add_stage(prodstage, pre=[  pipelines.ManualApprovalStep("PromoteToProd") ])
+#        prodstage=  Sprint5IrfanStage(self, "ProdStage", env={'account':'315997497220','region': 'us-east-2'} )
+ #       pipeline.add_stage(prodstage, pre=[  pipelines.ManualApprovalStep("PromoteToProd") ])
         
     
     
