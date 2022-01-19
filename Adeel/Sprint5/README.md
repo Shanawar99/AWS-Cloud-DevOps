@@ -1,7 +1,7 @@
-# Sprint 4
+# Sprint 5
 
 ## project discription
-**__Use docker-compose to build API test clients using pyresttest and Syntribos. These tests will exercise the web crawler's CRUD endpoint built in the previous sprint. Publish built images to Elastic Container Registry (ECR). Deploy API test clients from Sprint 4 on an EC2 instanceAWS Fargate. Build and push API test dockers through CodePipeline. Push API test results into CloudWatch. Setup alarming and notification on API test metrics. Extend tests in each stage. __**
+**__ Use docker-compose to build API test clients using pyresttest and Syntribos. These tests will exercise the web crawler's CRUD endpoint built in the previous sprint. Publish built images to Elastic Container Registry (ECR). Deploy API test clients from Sprint 4 on an EC2 instanceAWS Fargate. Build and push API test dockers through CodePipeline. Push API test results into CloudWatch. Setup alarming and notification on API test metrics. Extend tests in each stage. __**
 
 ## Concepts:
 
