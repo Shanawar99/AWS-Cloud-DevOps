@@ -103,6 +103,7 @@ class Sprint5IrfanStack(cdk.Stack):
         
         task_definition.add_container("DefaultContainer",
             image=image,
+            command=['docker run 315997497220.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest'],
             memory_limit_mib=512
         )
         
