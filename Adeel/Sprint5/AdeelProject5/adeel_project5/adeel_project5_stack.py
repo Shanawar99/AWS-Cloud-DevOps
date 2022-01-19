@@ -106,7 +106,7 @@ class AdeelProject5Stack(cdk.Stack):
         task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
         task_definition.add_container("DefaultContainer",
         image=image,
-        cammand= ['cd pyresttest',
+        command= ['cd pyresttest',
         'docker run --rm 315997497220.dkr.ecr.us-east-2.amazonaws.com/pyrestful https://oob9333t07.execute-api.us-east-2.amazonaws.com/prod/ github_api_smoketest.yaml'],
         memory_limit_mib=512)
         
