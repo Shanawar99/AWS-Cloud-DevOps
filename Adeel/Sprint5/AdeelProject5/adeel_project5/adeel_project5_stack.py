@@ -90,8 +90,9 @@ class AdeelProject5Stack(cdk.Stack):
         items.add_method("PUT") #  Allowed methods: ANY,OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD POST /items
         items.add_method("DELETE")
         
-        
+        ############################### Sprint 5 changes ###########################
         ############################## Image from ECR ###############################
+        #############################################################################
         
         
         repo = ecr.Repository.from_repository_name(self, "adeelecr", "pyrestful")
@@ -100,7 +101,7 @@ class AdeelProject5Stack(cdk.Stack):
         
         ############################## Cluster for ECS ###############################
 
-
+        ''''
         # Create an ECS cluster
         vpc = ec2.Vpc.from_lookup(self, "advpc",is_default=True)
         cluster = ecs.Cluster(self, "adeelC",vpc=vpc)
@@ -126,7 +127,7 @@ class AdeelProject5Stack(cdk.Stack):
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
             task_definition=task_definition)
-            
+        '''    
         ############################## Creating Dynamo table and giving it Premission ###############################
          
          
