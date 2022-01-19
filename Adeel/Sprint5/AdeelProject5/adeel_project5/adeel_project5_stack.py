@@ -97,11 +97,10 @@ class AdeelProject5Stack(cdk.Stack):
         image=ecs.EcrImage(repo, "latest")
 
         # Create an ECS cluster
-        #vpc = ec2.Vpc(self, "adeelVip",cidr="10.0.0.0/20",max_azs=1)
-        
-        cluster = ecs.Cluster(self, "adeelC")#,vpc=vpc)
-        # Add capacity to it
+        vpc = ec2.Vpc.from_lookup(self, "advpc",is_default=True)
         ''''
+        cluster = ecs.Cluster(self, "adeelC",vpc=vpc)
+        # Add capacity to it
         cluster.add_capacity("adeelEC2capacity",
             instance_type=ec2.InstanceType("t2.xlarge"))
         
