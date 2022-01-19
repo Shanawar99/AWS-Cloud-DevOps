@@ -88,29 +88,29 @@ class Sprint5IrfanStack(cdk.Stack):
     
 ###############    pulling image from ECR repo ###################################################
         
-       # repo = ecr.Repository.from_repository_name(self, "IrfanRepo", "hello-world")
-    #    image=ecs.EcrImage(repo, "latest")
+        repo = ecr.Repository.from_repository_name(self, "IrfanRepo", "hello-world")
+        image=ecs.EcrImage(repo, "latest")
         
         # Create an ECS cluster
-    #    vpc = ec2.Vpc(self, "VPC")
-    #    cluster = ecs.Cluster(self, "IrfanCluster",vpc=vpc)
+        vpc = ec2.Vpc(self, "VPC")
+        cluster = ecs.Cluster(self, "IrfanCluster",vpc=vpc)
         
         # Add capacity to it
-    #    cluster.add_capacity("IrfanClustorcapacity",
-    #        instance_type=ec2.InstanceType("t2.xlarge"))
+        cluster.add_capacity("IrfanClustorcapacity",
+            instance_type=ec2.InstanceType("t2.xlarge"))
         
-    #    task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
+        task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
         
-    #    task_definition.add_container("DefaultContainer",
-    #        image=image,
-    #        memory_limit_mib=512
-    #    )
+        task_definition.add_container("DefaultContainer",
+            image=image,
+            memory_limit_mib=512
+        )
         
         # Instantiate an Amazon ECS Service
-    #    ecs_service = ecs.Ec2Service(self, "Service",
-    #        cluster=cluster,
-    #        task_definition=task_definition
-    #    )
+            ecs_service = ecs.Ec2Service(self, "Service",
+            cluster=cluster,
+            task_definition=task_definition
+        )
                 
        
 ##############  reading URL from URL DynamoDB table  ##############################################        
