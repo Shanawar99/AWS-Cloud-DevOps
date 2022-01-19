@@ -91,10 +91,15 @@ class AdeelProject5Stack(cdk.Stack):
         items.add_method("DELETE")
         
         
+        ############################## Image from ECR ###############################
         
         
         repo = ecr.Repository.from_repository_name(self, "adeelecr", "pyrestful")
         image=ecs.EcrImage(repo, "latest")
+        
+        
+        ############################## Cluster for ECS ###############################
+
 
         # Create an ECS cluster
         vpc = ec2.Vpc.from_lookup(self, "advpc",is_default=True)
@@ -102,6 +107,10 @@ class AdeelProject5Stack(cdk.Stack):
         # Add capacity to it
         cluster.add_capacity("adeelEC2capacity",
             instance_type=ec2.InstanceType("t2.xlarge"))
+           
+            
+        ############################## Task defination ###############################
+        
         
         task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
         task_definition.add_container("DefaultContainer",
@@ -109,10 +118,15 @@ class AdeelProject5Stack(cdk.Stack):
         command= ['docker run --rm 315997497220.dkr.ecr.us-east-2.amazonaws.com/pyrestful https://oob9333t07.execute-api.us-east-2.amazonaws.com/prod/ github_api_smoketest.yaml'],
         memory_limit_mib=512)
         
+        
+        ############################## Giving the task to ECS ###############################
+        
+        
         # Instantiate an Amazon ECS Service
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
             task_definition=task_definition)
+            
         ############################## Creating Dynamo table and giving it Premission ###############################
          
          
