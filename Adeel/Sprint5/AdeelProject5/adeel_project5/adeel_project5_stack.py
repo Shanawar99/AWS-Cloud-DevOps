@@ -98,7 +98,6 @@ class AdeelProject5Stack(cdk.Stack):
 
         # Create an ECS cluster
         vpc = ec2.Vpc.from_lookup(self, "advpc",is_default=True)
-        ''''
         cluster = ecs.Cluster(self, "adeelC",vpc=vpc)
         # Add capacity to it
         cluster.add_capacity("adeelEC2capacity",
@@ -113,7 +112,6 @@ class AdeelProject5Stack(cdk.Stack):
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
             task_definition=task_definition)
-        '''
         ############################## Creating Dynamo table and giving it Premission ###############################
          
          
