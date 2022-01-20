@@ -101,13 +101,12 @@ class AdeelProject5Stack(cdk.Stack):
         
         ############################## Cluster for ECS ###############################
 
-        ''''
         # Create an ECS cluster
         vpc = ec2.Vpc.from_lookup(self, "advpc",is_default=True)
         cluster = ecs.Cluster(self, "adeelC",vpc=vpc)
         # Add capacity to it
         cluster.add_capacity("adeelEC2capacity",
-            instance_type=ec2.InstanceType("t2.xlarge"))
+            instance_type=ec2.InstanceType("t2.micro"))
            
             
         ############################## Task defination ###############################
@@ -117,7 +116,7 @@ class AdeelProject5Stack(cdk.Stack):
         task_definition.add_container("DefaultContainer",
         image=image,
         command= ['docker run --rm 315997497220.dkr.ecr.us-east-2.amazonaws.com/pyrestful https://oob9333t07.execute-api.us-east-2.amazonaws.com/prod/ github_api_smoketest.yaml'],
-        memory_limit_mib=512)
+        memory_limit_mib=256)
         
         
         ############################## Giving the task to ECS ###############################
@@ -127,7 +126,8 @@ class AdeelProject5Stack(cdk.Stack):
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
             task_definition=task_definition)
-        '''    
+            
+            
         ############################## Creating Dynamo table and giving it Premission ###############################
          
          
