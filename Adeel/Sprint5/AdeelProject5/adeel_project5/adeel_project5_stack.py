@@ -126,8 +126,7 @@ class AdeelProject5Stack(cdk.Stack):
         ecs_service = ecs.Ec2Service(self, "AdService",
             cluster=cluster,
             task_definition=task_definition)
-            
-            
+  
         ############################## Creating Dynamo table and giving it Premission ###############################
          
          
@@ -146,7 +145,7 @@ class AdeelProject5Stack(cdk.Stack):
         
          ############################## Alarms on cloud watch ###############################
         
-        Url_Monitor = bo('adeelskipq','urls.json').bucket_as_list()
+        #Url_Monitor = bo('adeelskipq','urls.json').bucket_as_list()
         links = dynamo_RW.ReadFromTable(constants.URLS_TABLE_NAME)
         b=1
         for url in links:
