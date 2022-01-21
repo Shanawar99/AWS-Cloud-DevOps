@@ -1,0 +1,48 @@
+# Test for Pyresttest
+# Does basic benchmark and measures the metrics
+---
+- config:
+    - testset: "Benchmark tests using test app"
+#Benchmark-1: For PUT method testing
+- benchmark: # benchmark to test PUT method's features
+    - name: "Basic put"
+    - headers: {'ContentType': 'application/json'}
+    - url: "https://n0q8c9iur5.execute-api.us-east-2.amazonaws.com/prod/"
+    - method: "PUT"
+    - body: 'www.myprt.com'
+    - warmup_runs: 1
+    - 'benchmark_runs': '20'
+    - output_format: csv
+    - metrics:
+        - total_time
+        - size_download
+        - total_time: mean
+
+#Benchmark-2: For GET method testing
+- benchmark: # benchmark to test GET method's features
+    - name: "Basic get"
+    - headers: {'ContentType': 'application/json'}
+    - url: "https://n0q8c9iur5.execute-api.us-east-2.amazonaws.com/prod/"
+    - method: "GET"
+    - warmup_runs: 1
+    - 'benchmark_runs': '30'
+    - output_format: csv
+    - metrics:
+        - total_time
+        - size_download
+        - total_time: mean
+        
+#Benchmark-3: For DELETE method testing
+- benchmark: # benchmark to test Delete method's features
+    - name: "Basic get"
+    - headers: {'ContentType': 'application/json'}
+    - url: "https://n0q8c9iur5.execute-api.us-east-2.amazonaws.com/prod/"
+    - method: "DELETE"
+    - warmup_runs: 1
+    - 'benchmark_runs': '1'
+    - output_format: csv
+    - metrics:
+        - total_time
+        - size_download
+        - total_time: mean
+        
