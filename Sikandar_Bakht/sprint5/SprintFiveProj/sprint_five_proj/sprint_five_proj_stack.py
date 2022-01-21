@@ -10,7 +10,13 @@ from aws_cdk import (
     aws_cloudwatch_actions as actions_,
     aws_dynamodb as db,
     aws_codedeploy as cdp,
-    aws_apigateway as apigateway
+    aws_apigateway as apigateway,
+    aws_amplify as amplify,
+    aws_codebuild as codebuild,
+    aws_ecr as ecr,
+    aws_ecs as ecs,
+    aws_ecs_patterns as ecs_patterns,
+    aws_ec2 as ec2
 )
 from resources import constants as constants
 from resources.S3bucket import S3Bucket as sb
@@ -21,33 +27,33 @@ import os
 import datetime
 import boto3
 
-class SprintThreeProjStack(cdk.Stack):
+class SprintFiveProjStack(cdk.Stack):
 
     def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        print("Sprint 3 Project stack instantiated :)")
+        print("Sprint 5 Project stack instantiated :)")
 
         #####################################################################################################################
         ##                                 WebHealth Monitor Lambda Configuration                                          ##
         #####################################################################################################################
         
         lambda_role = self.create_lambda_role()
-        WH_Lambda = self.create_lambda("SikandarS3WebHealthLambda", "./resources/", "WH_Lambda.lambda_handler", lambda_role,
+        WH_Lambda = self.create_lambda("SikandarS5WebHealthLambda", "./resources/", "WH_Lambda.lambda_handler", lambda_role,
                                         cdk.Duration.seconds(20))
                             
         lambda_schedule = events_.Schedule.rate(cdk.Duration.minutes(1))
         lambda_target = targets_.LambdaFunction(handler=WH_Lambda)
-        rule = events_.Rule(self, "S3webHealth_Invocation", description="Periodic Lambda", enabled=True, schedule=lambda_schedule, 
+        rule = events_.Rule(self, "S5webHealth_Invocation", description="Periodic Lambda", enabled=True, schedule=lambda_schedule, 
                             targets=[lambda_target])
         
         #####################################################################################################################
         ##                              Setting Up DynamoDB WebHealth Logging Table                                        ##
         #####################################################################################################################
 
-        db_table = self.create_db_table(id = "SprintThreeAlarmTable", part_key=db.Attribute(name="Timestamp", type=db.AttributeType.STRING))
+        db_table = self.create_db_table(id = "SprintFiveAlarmTable", part_key=db.Attribute(name="Timestamp", type=db.AttributeType.STRING))
         db_lambda_role = self.create_db_lambda_role()
-        DB_Lambda = self.create_lambda("SikandarS3DBLambda", "./resources/", "DB_Lambda.lambda_handler", role=db_lambda_role)
+        DB_Lambda = self.create_lambda("SikandarS5DBLambda", "./resources/", "DB_Lambda.lambda_handler", role=db_lambda_role)
         db_table.grant_full_access(DB_Lambda)
         DB_Lambda.add_environment('table_name', db_table.table_name)
         
@@ -55,7 +61,7 @@ class SprintThreeProjStack(cdk.Stack):
         ##                      Setting Up SNS Notifications for Email and Lambda Triggering                               ##
         #####################################################################################################################
 
-        topic = sns.Topic(self, "S3webHealthTopic")
+        topic = sns.Topic(self, "S4webHealthTopic")
         topic.add_subscription(subscriptions_.EmailSubscription(email_address = "sikandar.bakht.s@skipq.org"))
         topic.add_subscription(subscriptions_.LambdaSubscription(fn = DB_Lambda))
         
@@ -71,14 +77,14 @@ class SprintThreeProjStack(cdk.Stack):
         #####################################################################################################################
         
         api_lambda_role = self.create_api_lambda_role()
-        API_Lambda = self.create_lambda("SikandarS3_API_Lambda", "./resources/", "API_Lambda.lambda_handler", api_lambda_role,
-                                        cdk.Duration.seconds(20))
+        API_Lambda = self.create_lambda("SikandarS4_API_Lambda", "./resources/", "API_Lambda.lambda_handler", api_lambda_role,
+                                        cdk.Duration.minutes(1))
         
         #####################################################################################################################
         ##                                          Create Table for holding values                                        ##
         #####################################################################################################################
         
-        api_table = db.Table(self, id = "SprintThreeAPI_Table",
+        api_table = db.Table(self, id = "SprintFourAPI_Table",
                             billing_mode=db.BillingMode.PAY_PER_REQUEST, 
                             partition_key=db.Attribute(name="URL", type=db.AttributeType.STRING))
                             
@@ -90,7 +96,7 @@ class SprintThreeProjStack(cdk.Stack):
         ##                             Setting up API for accessing URLs from DynamoDB Table                               ##
         #####################################################################################################################
         
-        monitor_api = apigateway.LambdaRestApi(self, "SikandarS3_API",
+        monitor_api = apigateway.LambdaRestApi(self, "SikandarS5_API",
                                 handler=API_Lambda
                                 )
         
@@ -102,11 +108,39 @@ class SprintThreeProjStack(cdk.Stack):
         table.add_method("PUT")                             #update a url specified by index as key through api
         table.add_method("DELETE")                          #delete a url specified by index as through api
                                 
+        #####################################################################################################################
+        ##                                      Deploying to AWS Amplify                                                   ##
+        #####################################################################################################################
         
+        amplify_app = amplify.App(self, "SikandarS4ReactApp",
+                                source_code_provider=amplify.GitHubSourceCodeProvider(
+                                    owner="Sikandar-Bakht",
+                                    repository="skipq_react_app",
+                                    oauth_token=cdk.SecretValue.secrets_manager("Sikandar/github/token")),
+                                    basic_auth=amplify.BasicAuth.from_generated_password("Sikandar"))
+        amplify_app.add_environment(name='ENDPOINT', value=monitor_api.url)
+        main = amplify_app.add_branch("main")
+        
+        #####################################################################################################################
+        ##                                      Running API test client containers                                         ##
+        #####################################################################################################################
+        
+        repo = ecr.Repository.from_repository_name(self, "SikandarECR_Repo", "sikandarsprint5")
+        image=ecs.EcrImage(repo, "latest")
+        
+        vpc = ec2.Vpc(self, "Sikandar_VPC")
+        cluster = ecs.Cluster(self, "Sikandar_cluster")
+
+        ecs_patterns.ApplicationLoadBalancedFargateService(self, "SikandarFGService",
+            cluster=cluster,    
+            cpu=512,                    
+            task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(image=image),
+            memory_limit_mib=2048)  
+
+
         #####################################################################################################################
         ##                                      Creating Cloudwatch Metrics                                                ##
         #####################################################################################################################
-        
         availability_metric = []
         latency_metric = []
         
@@ -115,7 +149,7 @@ class SprintThreeProjStack(cdk.Stack):
             dimensions = {'URL': URLS_MONITORED['URLS'][0][K[i]]}
             availability_metric.append(
                                 cloudwatch_.Metric(namespace = constants.URL_MONITOR_NAMESPACE,
-                                metric_name="S2"+constants.URL_MONITOR_NAME_AVAILABILITY,
+                                metric_name="S4"+constants.URL_MONITOR_NAME_AVAILABILITY,
                                 dimensions_map = dimensions,
                                 period = cdk.Duration.minutes(5),
                                 label = f'{K[i]} Availability Metric')
@@ -123,7 +157,7 @@ class SprintThreeProjStack(cdk.Stack):
                         
             latency_metric.append(
                                 cloudwatch_.Metric(namespace = constants.URL_MONITOR_NAMESPACE,
-                                metric_name="S2"+constants.URL_MONITOR_NAME_LATENCY,
+                                metric_name="S4"+constants.URL_MONITOR_NAME_LATENCY,
                                 dimensions_map = dimensions,
                                 period = cdk.Duration.minutes(1),
                                 label = f'{K[i]} Latency Metric')
@@ -140,7 +174,7 @@ class SprintThreeProjStack(cdk.Stack):
             
             availability_alarm.append(
                                     cloudwatch_.Alarm(self, 
-                                    id = f'Sikandar_Bakht_S2_{K[i]}_Availability_Alarm',
+                                    id = f'Sikandar_Bakht_S4_{K[i]}_Availability_Alarm',
                                     alarm_description = f"Alarm to monitor availability of {K[i]}",
                                     metric = availability_metric[i],
                                     comparison_operator =cloudwatch_.ComparisonOperator.LESS_THAN_THRESHOLD,
@@ -151,7 +185,7 @@ class SprintThreeProjStack(cdk.Stack):
                                     
             latency_alarm.append(
                                     cloudwatch_.Alarm(self, 
-                                    id = f'Sikandar_Bakht_S2_{K[i]}_Latency_Alarm',
+                                    id = f'Sikandar_Bakht_S4_{K[i]}_Latency_Alarm',
                                     alarm_description = f"Alarm to monitor latency of {K[i]}",
                                     metric = latency_metric[i],
                                     comparison_operator =cloudwatch_.ComparisonOperator.GREATER_THAN_THRESHOLD,
@@ -174,7 +208,7 @@ class SprintThreeProjStack(cdk.Stack):
         #####################################################################################################################
         
         alias = lambda_.Alias(self, 
-                            "S2WHLambdaAlias",
+                            "S4WHLambdaAlias",
                             alias_name="SikandarWHLambdaAlias",
                             version=WH_Lambda.current_version)
                             

@@ -5,7 +5,7 @@ from aws_cdk import (
 )
 
 from aws_cdk import core
-from sprint_three_proj.sprint_three_proj_stage import SprintThreeProjStage
+from sprint_five_proj.sprint_five_proj_stage import SprintFiveProjStage
 
 class SikandarPipelineStack(cdk.Stack):
 
@@ -19,27 +19,27 @@ class SikandarPipelineStack(cdk.Stack):
                                              )
         
         synth = pipelines.ShellStep("Synth", input=source,
-                                            commands=["cd ./Sikandar_Bakht/sprint3/SprintThreeProj",
+                                            commands=["cd ./Sikandar_Bakht/sprint5/SprintFiveProj",
                                                       "pip install -r requirements.txt",
                                                       "npm install -g aws-cdk",
                                                       "cdk synth"],
-                                            primary_output_directory = "./Sikandar_Bakht/sprint3/SprintThreeProj/cdk.out"
+                                            primary_output_directory = "./Sikandar_Bakht/sprint5/SprintFiveProj/cdk.out"
                                             )
         pipeline = pipelines.CodePipeline(self,
                                           'SikandarPipeline',
                                           synth = synth
                                             )
-        Beta = SprintThreeProjStage(self, "beta", env = {
+        Beta = SprintFiveProjStage(self, "beta", env = {
                                             'account':'315997497220',
-                                            'region' : 'us-east-2'
+                                            'region' : 'us-east-1'
                                             })
                                             
-        Prod = SprintThreeProjStage(self, "Prod", env = {
+        Prod = SprintFiveProjStage(self, "Prod", env = {
                                             'account':'315997497220',
-                                            'region' : 'us-east-2'
+                                            'region' : 'us-east-1'
                                             })
 
-        unit_test = pipelines.ShellStep("unit_test", commands=["cd ./Sikandar_Bakht/sprint3/SprintThreeProj",  
+        unit_test = pipelines.ShellStep("unit_test", commands=["cd ./Sikandar_Bakht/sprint5/SprintFiveProj",  
                                                                "pip install -r requirements.txt",
                                                                "pytest unit_test",
                                                                "pytest integtest"])

@@ -1,11 +1,11 @@
 from aws_cdk import (
     core as cdk
 )
-from sprint_three_proj.sprint_three_proj_stack import SprintThreeProjStack
+from sprint_five_proj.sprint_five_proj_stack import SprintFiveProjStack
 
-class SprintThreeProjStage(cdk.Stage):
+class SprintFiveProjStage(cdk.Stage):
 
     def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
         
-        s2_stack = SprintThreeProjStack(self, 'SikandarS3Instance')
+        s5_stack = SprintFiveProjStack(self, 'SikandarS5Instance')

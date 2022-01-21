@@ -12,7 +12,9 @@ def lambda_handler(event, context):
     
     path = event['path']
     httpMethod = event['httpMethod']
-    
+    origin = None
+    if origin in event['headers']:
+        origin = event['headers']['origin']
     body = event['body']
     table_name = os.getenv("api_table_name")
     print(event)
@@ -21,15 +23,16 @@ def lambda_handler(event, context):
         
         bucket_name = event['queryStringParameters']["bucket_name"]
         object_key = event['queryStringParameters']["object_key"]
-        response = bucket_to_table(bucket_name, object_key, table_name)
+        response = bucket_to_table(bucket_name, object_key, table_name, origin)
         
     elif path == TABLE_PATH and httpMethod == 'GET':
         
-        if 'url' in list(event['queryStringParameters'].keys()):
+        if event['queryStringParameters'] is not None:
             url = event['queryStringParameters']['url']
-            response = fetch_url(table_name, url)
+            response = fetch_url(table_name, origin, url)
+            print(response, origin)
         else:
-            response = fetch_url(table_name)
+            response = fetch_url(table_name, origin)
         
     elif path == TABLE_PATH and httpMethod == 'POST':
         
@@ -59,21 +62,43 @@ def lambda_handler(event, context):
         print(event)
         response = {
                     "statusCode":300,
+                    "headers": {
+                                "Access-Control-Allow-Headers" : "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                               },
                     "body": "request failed"
                     }
    
     return response
 
 
-def construct_response(msg):
-    response = {
+def construct_response(msg, origin=None):
+    
+    if origin is None:
+        response = {
                 "statusCode":200,
+                "headers": {
+                                "Access-Control-Allow-Headers" : "application/json",
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                               },
+                "body": msg
+               }
+    else:
+        response = {
+                "statusCode":200,
+                "headers": {
+                                "Access-Control-Allow-Headers" : "application/json",
+                                "Access-Control-Allow-Origin": origin,
+                                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                               },
                 "body": msg
                }
     return response
 
 
-def bucket_to_table(bucket_name, object_key, table_name):
+def bucket_to_table(bucket_name, object_key, table_name, origin):
     '''
     
     RESPONSE OF LOADING URLS FROM BUCKET
@@ -100,11 +125,11 @@ def bucket_to_table(bucket_name, object_key, table_name):
                                 'Name': K[i]})
     
     msg = f"{len(K)} urls added/updated"
-    return construct_response(msg)
+    return construct_response(msg, origin)
 
 
 
-def fetch_url(table_name, url=None):
+def fetch_url(table_name, origin, url=None):
     '''
     
     RESPONSE OF READING URLS FROM TABLE
@@ -125,15 +150,13 @@ def fetch_url(table_name, url=None):
         
         if 'Item' in URL:
            # msg = URL['Item']['Name'] + ": " + URL['Item']['URL'] 
-           msg = {
-                    "Name": URL['Item']['Name'],
-                    "URL": URL['Item']['URL']
+           msg = f'''
+                    "Name": {URL['Item']['Name']},
+                    "URL": {URL['Item']['URL']}
                     
-                 }
+                 '''
         else:
             msg = "Specified URL name does not exist"
-        
-        return construct_response(msg)
         
     else:
         response = table.scan()
@@ -141,15 +164,15 @@ def fetch_url(table_name, url=None):
         while 'LastEvaluatedKey' in response:
             response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
             URL.extend(response['Items'])
-       
+        
         msg = []
         for i in range(len(URL)):
             msg.append({
-                        "Name": URL[i]['Item']['Name'],
-                        "URL": URL[i]['Item']['URL']
+                        "Name": URL[i]['Name'],
+                        "URL": URL[i]['URL']
                       })
-                      
-        return construct_response(msg)
+                    
+    return construct_response(json.dumps(URL), origin)
         
         
 

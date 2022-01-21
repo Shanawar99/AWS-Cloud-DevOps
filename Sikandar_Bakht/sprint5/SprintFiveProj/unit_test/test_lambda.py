@@ -1,10 +1,10 @@
 import pytest
 from aws_cdk import core
-from sprint_three_proj.sprint_three_proj_stack import SprintThreeProjStack
+from sprint_five_proj.sprint_five_proj_stack import SprintFiveProjStack
 
 
 app = core.App()
-SprintThreeProjStack(app,"teststack")
+SprintFiveProjStack(app,"teststack")
 template=app.synth().get_stack_by_name('teststack').template
 
 def test_lambda_stack():
@@ -21,7 +21,7 @@ def test_table():
     
 def test_iam_roles():
     roles=[resource for resource in template['Resources'].values() if resource['Type']== 'AWS::IAM::Role']
-    assert len(roles)==4
+    assert len(roles)==5
     
 
 def test_cloudwatch_alarms():
