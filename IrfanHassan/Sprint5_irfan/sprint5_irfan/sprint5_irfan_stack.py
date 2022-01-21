@@ -91,8 +91,9 @@ class Sprint5IrfanStack(cdk.Stack):
         repo = ecr.Repository.from_repository_name(self, "IrfanRepo", "hello-world")
         image=ecs.EcrImage(repo, "latest")
         
+############### deploy image using ECS ############################################################        
         # Create an ECS cluster
-        vpc = ec2.Vpc.from_lookup(self, "IrfanVpc",is_default=True)
+        vpc = ec2.Vpc.from_lookup(self, "IrfanVpc",is_default=True)  #virtual private cloud#
         cluster = ecs.Cluster(self, "IrfanCluster",vpc=vpc)
         
         # Add capacity to it
