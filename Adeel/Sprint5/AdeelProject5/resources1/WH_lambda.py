@@ -13,8 +13,8 @@ def lambda_handler(events, context):
      ############################## Accessing S3 bucket links in list ###############################
     
     cw = cloudWatchPutMetric();
-    Url_Monitor= bo('adeelskipq','urls.json').bucket_as_list()
-    print(Url_Monitor)
+    #Url_Monitor= bo('adeelskipq','urls.json').bucket_as_list()
+    #print(Url_Monitor)
     
     links = dynamo_RW.ReadFromTable(os.getenv(key ='table_name'))
     print(links)

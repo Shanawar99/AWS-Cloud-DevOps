@@ -13,7 +13,10 @@ from aws_cdk import (
     aws_cloudwatch_actions as actions_,
     aws_dynamodb as db,
     aws_codedeploy as codedeploy,
-    aws_apigateway as apigateway
+    aws_apigateway as apigateway,
+    aws_ec2 as ec2,
+    aws_ecr as ecr,
+    aws_ecs as ecs
 )
 from constructs import Construct
 from resources1 import constants1 as constants
@@ -87,7 +90,43 @@ class AdeelProject5Stack(cdk.Stack):
         items.add_method("PUT") #  Allowed methods: ANY,OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD POST /items
         items.add_method("DELETE")
         
+        ############################### Sprint 5 changes ###########################
+        ############################## Image from ECR ###############################
+        #############################################################################
         
+        
+        repo = ecr.Repository.from_repository_name(self, "adeelecr", "pyrestful")
+        image=ecs.EcrImage(repo, "latest")
+        
+        
+        ############################## Cluster for ECS ###############################
+
+        # Create an ECS cluster
+        vpc = ec2.Vpc.from_lookup(self, "advpc",is_default=True)
+        cluster = ecs.Cluster(self, "adeelC",vpc=vpc)
+        # Add capacity to it
+        cluster.add_capacity("adeelEC2capacity",
+            instance_type=ec2.InstanceType("t2.micro"))
+           
+            
+        ############################## Task defination ###############################
+        
+        
+        task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
+        task_definition.add_container("DefaultContainer",
+        image=image,
+        command= ['docker run --rm 315997497220.dkr.ecr.us-east-2.amazonaws.com/pyrestful https://oob9333t07.execute-api.us-east-2.amazonaws.com/prod/ github_api_smoketest.yaml'],
+        memory_limit_mib=256)
+        
+        
+        ############################## Giving the task to ECS ###############################
+        
+        
+        # Instantiate an Amazon ECS Service
+        ecs_service = ecs.Ec2Service(self, "AdService",
+            cluster=cluster,
+            task_definition=task_definition)
+  
         ############################## Creating Dynamo table and giving it Premission ###############################
          
          
@@ -106,7 +145,7 @@ class AdeelProject5Stack(cdk.Stack):
         
          ############################## Alarms on cloud watch ###############################
         
-        Url_Monitor = bo('adeelskipq','urls.json').bucket_as_list()
+        #Url_Monitor = bo('adeelskipq','urls.json').bucket_as_list()
         links = dynamo_RW.ReadFromTable(constants.URLS_TABLE_NAME)
         b=1
         for url in links:
