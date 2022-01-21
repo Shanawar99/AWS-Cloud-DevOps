@@ -15,12 +15,15 @@ from aws_cdk import (
     aws_apigateway as apigateway_,
     aws_amplify as amplify_,
     aws_codebuild as codebuild_,
-    aws_s3_assets as s3_assets
+    aws_s3_assets as s3_assets,
+    aws_ecs as ecs,
+    aws_ecr as ecr,
+    aws_ec2 as ec2
 )
 from resources import constants as constant_
 from resources.s3bucket_read import s3bucket_read as bucket_ 
 
-class Sprint4IrfanStack(cdk.Stack):
+class Sprint5IrfanStack(cdk.Stack):
 
     def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -83,12 +86,41 @@ class Sprint4IrfanStack(cdk.Stack):
         items.add_method("DELETE") # PUT items
         items.add_method("POST")  #update items
     
-##############  reading URL from URL DynamoDB table  ##############################################        
+###############    pulling image from ECR repo ###################################################
         
+        repo = ecr.Repository.from_repository_name(self, "IrfanRepo", "hello-world")
+        image=ecs.EcrImage(repo, "latest")
+        
+############### deploy image using ECS ############################################################        
+        # Create an ECS cluster
+        vpc = ec2.Vpc.from_lookup(self, "IrfanVpc",is_default=True)  #virtual private cloud#
+        cluster = ecs.Cluster(self, "IrfanCluster",vpc=vpc)
+        
+        # Add capacity to it
+        cluster.add_capacity("IrfanClustorcapacity",
+            instance_type=ec2.InstanceType("t2.xlarge"))
+        
+        task_definition = ecs.Ec2TaskDefinition(self, "TaskDef")
+        
+        task_definition.add_container("DefaultContainer",
+            image=image,
+            command=['docker run 315997497220.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest'],
+            memory_limit_mib=512
+        )
+        
+        # Instantiate an Amazon ECS Service
+        ecs_service = ecs.Ec2Service(self, "Service",
+            cluster=cluster,
+            task_definition=task_definition
+        )
+                
+       
+##############  reading URL from URL DynamoDB table  ##############################################        
+        #
         list_url=bucket_(constant_.bucket,constant_.file_name).bucket_as_list();
 
 #############  adding metrics and alarm for each webpage ##############################################
-        
+
         for url in list_url:                   
             Dimensions={'URL': url }
             
