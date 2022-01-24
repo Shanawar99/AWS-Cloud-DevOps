@@ -35,7 +35,7 @@ Build a Front-End user-interface for the CRUD API Gateway using ReactJS. The use
 ## Outputs
  ### Cognito Login
 ![image](https://user-images.githubusercontent.com/96059754/148870758-b8e91154-ccbf-4870-a035-0b6525f0a9d7.png)
-### UI
+### User Interface
 ![image](https://user-images.githubusercontent.com/96059754/148871975-0882d13b-7791-48fa-be85-83db85d14b1b.png)
 
 ## Support
