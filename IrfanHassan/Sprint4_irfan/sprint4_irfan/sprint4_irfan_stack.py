@@ -83,13 +83,12 @@ class Sprint4IrfanStack(cdk.Stack):
         items.add_method("DELETE") # PUT items
         items.add_method("POST")  #update items
     
-        
 ##############  reading URL from URL DynamoDB table  ##############################################        
-        #
+        
         list_url=bucket_(constant_.bucket,constant_.file_name).bucket_as_list();
 
 #############  adding metrics and alarm for each webpage ##############################################
-
+        
         for url in list_url:                   
             Dimensions={'URL': url }
             

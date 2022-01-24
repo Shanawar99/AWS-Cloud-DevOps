@@ -1,0 +1,44 @@
+---
+- config:
+    - testset: "Benchmark tests for Pyresttest Image"
+#------------------------------------------------
+#adding benchmark to our API Gateway GET method
+#------------------------------------------------
+- benchmark:
+    - name: "GET Items test"
+    - headers: { "ContentType": "application/json" }
+    - url: "https://ndeugavtv6.execute-api.us-east-2.amazonaws.com/prod/" #api gateway link
+    - method: "GET"
+    - warmup_runs: 1
+    - "benchmark_runs": "7" #kust random number
+    - output_format: csv
+    - metrics:
+        - total_time
+#------------------------------------------------
+#adding benchmark to our API Gateway PUT method
+#------------------------------------------------
+#- benchmark:
+#    - name: "PUT Items test"
+#    - headers: { "ContentType": "application/json" }
+#    - url: "https://ndeugavtv6.execute-api.us-east-2.amazonaws.com/prod/" #api gateway link
+#    - method: "GET"
+#    - body: 'www.test.com'
+#    - warmup_runs: 1
+#    - "benchmark_runs": "5" #kust random number
+#    - output_format: csv
+#    - metrics:
+#        - total_time
+#------------------------------------------------
+#adding benchmark to our API Gateway DELETE method
+#------------------------------------------------
+#- benchmark:
+#    - name: "DELETE Items test"
+#    - headers: { "ContentType": "application/json" }
+#    - url: "https://ndeugavtv6.execute-api.us-east-2.amazonaws.com/prod/" #api gateway link
+#    - method: "DELETE"
+#    - body: 'www.test.com'
+#    - warmup_runs: 1
+#    - "benchmark_runs": "5" #kust random number
+#    - output_format: csv
+#    - metrics:
+#        - total_time
