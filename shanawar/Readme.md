@@ -1,4 +1,3 @@
-<h1 align="center">  AWS Cloud DevOps 
   
 A 6-week training on Production Grade Programming taught by a team of top instructors and industry coaches. 
 ##Sprints and agile framework##
