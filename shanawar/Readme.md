@@ -4,11 +4,11 @@ A 6-week training on Production Grade Programming taught by a team of top instru
 We simulate the industry environment by running weekly sprints, starting with planning, backlog grooming via clear user stories and effort estimates determined through story points, tracking progress through daily stand-ups, and concluding with demos and retrospective. 
 ## Project-centric approach
  Sprints are structured around a central project that the trainees build upon over 6 weeks. 
-## Code reviews##
+## Code reviews
  Trainees improve their code daily based on code reviews from the instructor and the coach. Trainees also practice writing code reviews on other trainees' code repos. 
-## Continuous assessment##
+## Continuous assessment
  Performance is evaluated after every sprint using metrics that track submitted code for correctness, testability, efficiency, modularity, and documentation quality. Trainees are also assessed on their learning pace, communication skills, and teamwork. 
-## Soft skills development##
+## Soft skills development
  Trainees learn to collaborate effectively by working in teams and by openly giving and receiving feedback through code reviews. They receive regular feedback from instructors on communication skills with respect to daily stand-ups, weekly project presentations, email, and documentation writing.
  
 ## Course Project:
@@ -21,7 +21,7 @@ Our application will use Cloudwatch to store business-critical metrics along wit
 | Sprints  | Learning Objectives |
 | ------------- | ------------- |
 | Sprint 1  | Project: Use AWS CDK to build a canary in a Lambda function. This canary runs in one AWS Region and measures the availability and latency of a custom list (a json file placed in 53 bucket) of websites. Run the crawler periodically on a 5 min cadence and write <availability, latency> metrics for each website and each run to CloudWatch using CloudWatch's API. Create a CloudWatch Dashboard to monitor website health, and set up alarms when availability or latency falls below prescribed thresholds. Every alarm is also published to SNS/SQS notifications with tags that can be used to filter by metric type. Push the code to versioning control repo. Manage README files and runbooks in markdown on GitHub. 
-### Concepts:  
+Concepts:  
 *Introduction to the DevOps Engineer Role and Infrastructure-as-Code (laC) 
 * Introduction to AWS: Regions/AZs/Edge Services, Foundational services (EC2, 53, CloudFront), Microservice architecture
 * Introduction to the Art of Monitoring Web Applications 
