@@ -20,18 +20,18 @@ Our application will use Cloudwatch to store business-critical metrics along wit
 
 | Sprints  | Learning Objectives |
 | ------------- | ------------- |
-| Sprint 1  | Project: Use AWS CDK to build a canary in a Lambda function. This canary runs in one AWS Region and measures the availability and latency of a custom list (a json file placed in 53 bucket) of websites. Run the crawler periodically on a 5 min cadence and write <availability, latency> metrics for each website and each run to CloudWatch using CloudWatch's API. Create a CloudWatch Dashboard to monitor website health, and set up alarms when availability or latency falls below prescribed thresholds. Every alarm is also published to SNS/SQS notifications with tags that can be used to filter by metric type. Push the code to versioning control repo. Manage README files and runbooks in markdown on GitHub. Concepts:  
- *Introduction to the DevOps Engineer Role and Infrastructure-as-Code (laC) 
+| Sprint 1  | Project: Use AWS CDK to build a canary in a Lambda function. This canary runs in one AWS Region and measures the availability and latency of a custom list (a json file placed in 53 bucket) of websites. Run the crawler periodically on a 5 min cadence and write <availability, latency> metrics for each website and each run to CloudWatch using CloudWatch's API. Create a CloudWatch Dashboard to monitor website health, and set up alarms when availability or latency falls below prescribed thresholds. Every alarm is also published to SNS/SQS notifications with tags that can be used to filter by metric type. Push the code to versioning control repo. Manage README files and runbooks in markdown on GitHub. Concepts: * Introduction to the DevOps Engineer Role and Infrastructure-as-Code (laC) 
  * Introduction to AWS: Regions/AZs/Edge Services, Foundational services (EC2, 53, CloudFront), Microservice architecture
  * Introduction to the Art of Monitoring Web Applications 
  * Learn AWS Services: IAM, Lambda ,Cloud Watch, SNS, SQS 
- * Learn Tools: Shell and Scripting, Vim, GitHub |
+ * Learn Tools: Shell and Scripting, Vim, GitHub |  
+
   
 | Sprint 2  | Project: Create multi-stage pipeline having Beta/Gamma and Prod stage using CDK. Deploy the project code in 1 Region. Each stage must have bakeTimes, code-review, and test blockers. Write unit/integration tests for the web crawler. Emit CloudWatch metrics and alarms for the operational health of the web crawler, including memory and time-to-process each crawler run. Automate rollback to the last build if metrics are in alarm. Manage README files and runbooks in markdown on GitHub. 
 ### Concepts
   * Introduction to Cl/CD 
-*Learn AWS services: CodePipeline for build and test, CodeDeploy for CD 
-*Integrate AWS CodePipeline with GitHub 
+* Learn AWS services: CodePipeline for build and test, CodeDeploy for CD 
+* Integrate AWS CodePipeline with GitHub 
 * Learn automated testing using PyTest running 
 * Build a release process by writing merge-blocking automated tests for the canary on CodePipeline
 *  Build operational CloudWatch metrics for web crawler
