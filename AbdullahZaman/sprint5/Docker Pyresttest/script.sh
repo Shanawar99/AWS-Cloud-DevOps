@@ -1,1 +1,0 @@
-pyresttest https://s7rt0vfv66.execute-api.us-east-2.amazonaws.com apiTest.yaml

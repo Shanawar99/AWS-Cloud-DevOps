@@ -1,7 +1,0 @@
----
-- config:
-    - testset: "Basic tests"
-    - timeout: 2000
-- url: "/prod/TABLE"  # This is a simple test
-- test: 
-    - url: "/prod/TABLE"  # This does the same thing

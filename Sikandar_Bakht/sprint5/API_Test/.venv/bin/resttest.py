@@ -1,4 +1,0 @@
-#!/home/ubuntu/environment/API_Test/.venv/bin/python3
-import sys
-from pyresttest import resttest
-resttest.command_line_run(sys.argv[1:])

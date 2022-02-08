@@ -1,1 +1,0 @@
-syntribos --config-file $(syntribos root)/syntribos.conf run
