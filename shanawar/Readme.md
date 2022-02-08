@@ -1,6 +1,6 @@
   
 A 6-week training on Production Grade Programming taught by a team of top instructors and industry coaches. 
-##Sprints and agile framework##
+##Sprints and agile framework
 We simulate the industry environment by running weekly sprints, starting with planning, backlog grooming via clear user stories and effort estimates determined through story points, tracking progress through daily stand-ups, and concluding with demos and retrospective. 
 ##Project-centric approach##
  Sprints are structured around a central project that the trainees build upon over 6 weeks. 
