@@ -1,15 +1,15 @@
 <h1 align="center">  AWS Cloud DevOps 
   
 A 6-week training on Production Grade Programming taught by a team of top instructors and industry coaches. 
-##Sprints and agile framework
+##Sprints and agile framework##
 We simulate the industry environment by running weekly sprints, starting with planning, backlog grooming via clear user stories and effort estimates determined through story points, tracking progress through daily stand-ups, and concluding with demos and retrospective. 
-##Project-centric approach
+##Project-centric approach##
  Sprints are structured around a central project that the trainees build upon over 6 weeks. 
-##Code reviews
+##Code reviews##
  Trainees improve their code daily based on code reviews from the instructor and the coach. Trainees also practice writing code reviews on other trainees' code repos. 
-##Continuous assessment
+##Continuous assessment##
  Performance is evaluated after every sprint using metrics that track submitted code for correctness, testability, efficiency, modularity, and documentation quality. Trainees are also assessed on their learning pace, communication skills, and teamwork. 
-##Soft skills development
+##Soft skills development##
  Trainees learn to collaborate effectively by working in teams and by openly giving and receiving feedback through code reviews. They receive regular feedback from instructors on communication skills with respect to daily stand-ups, weekly project presentations, email, and documentation writing.
  
 ##Course Project: An engineer graduating from this course will use infrastructure-as-code (laC) constructs to build and operate a production-grade web application running across multiple AWS Regions. The DevOps engineer will write a RESTful Python application on AWS, use Cl/CD to automate multiple deployment stages (prod vs beta), write unit/integration tests to continuously deploy the application without human intervention, store logs in Cloud Watch, and automate metrics to roll back a deployment in case of service degradation. 
