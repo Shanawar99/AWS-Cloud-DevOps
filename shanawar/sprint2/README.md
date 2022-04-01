@@ -12,7 +12,7 @@ A multistage pipeline having Beta/gamma and Prod stage with unit/integration tes
   * Operational metric and alarm for webcrawler
   * Automated Rollback to last build
   
-## Installing and Running Project
+## Installing and Running Project.
 
 
 https://user-images.githubusercontent.com/96059754/147419249-7c3fc66a-c0f9-4050-a34c-8a34921d245c.mp4
