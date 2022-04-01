@@ -2,7 +2,7 @@
 <h1 align="center">  Sprint 3: Build CRUD API Gateway endpoint for the Web Crawler 
   
 ## Description
-Build a public CRUD API Gateway endpoint for the web crawler to create/read/update/delete the target list containing the list of websites/webpages to crawl along with extended tests in each stage to cover the CRUD operations and DynamoDB read/write time.
+Build a public CRUD API Gateway endpoint for the web crawler to create/read/update/delete the target list containing the list of websites/webpages to crawl along with extended tests in each stage to cover the CRUD operations and DynamoDB read/write time
   
 ## Concepts
 *	Learn AWS Services: API Gateway, DynamoDB  
